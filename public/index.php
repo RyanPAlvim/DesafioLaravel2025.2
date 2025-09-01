@@ -4,8 +4,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
+//Define constante que pega o timestamp atual usando unix time 
+//Usado pra medir tempo total que uma requisição é processada
 
 // Determine if the application is in maintenance mode...
+// php artisan down/up
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
