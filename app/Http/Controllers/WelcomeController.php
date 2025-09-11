@@ -6,10 +6,8 @@ use App\Models\User;
 
 class WelcomeController
 {
-    public function __invoke()
+    public function index()
     {
-        dd(User::factory());
-
-        return view("dashboard");  
+        return view("welcome");  
     }
 }

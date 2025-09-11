@@ -21,7 +21,17 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        
+        'cpf',
+        'birth_date',
+        'phone',
+        'profile_photo_path',
+        'cep',
+        'rua',
+        'numero',
+        'bairro',
+        'cidade',
+        'estado',
+        'complemento',
     ];
 
     /**
@@ -44,6 +54,32 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birth_date' => 'date',
         ];
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'recipient_id');
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
     }
 }
