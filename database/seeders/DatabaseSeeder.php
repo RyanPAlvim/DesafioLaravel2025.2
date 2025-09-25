@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $catCamisetas = Category::create(['name' => 'Camisetas']);
+        Category::factory(10)->create();
 
         // User::factory(10)->create();
         $users = User::factory(10)->create();
