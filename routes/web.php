@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -16,8 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 

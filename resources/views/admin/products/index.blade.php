@@ -1,18 +1,18 @@
 <x-admin-layout>
     <div class="py-4 px-4 text-white flex justify-between items-center max-w-7xl bg-sky-800 border mx-auto mt-10 rounded-lg">
-        <div>
-            
-        </div>
+        
         <h1 class="text-4xl uppercase font-semibold">Produtos</h1>
-        <button type="button"
-            data-modal="createModal" 
-            data-photopath=""
-            class="hover:cursor-pointer" >
-            <div class="flex gap-2 justify-center items-center transition duration-300 ease-in-out hover:scale-105 border border-white rounded-lg px-2 py-2">
-                <h1 class="hidden text-lg font-bold md:block">Criar</h1>
-                <h1 class="text-xl">+</h1>
-            </div>
-        </button>
+        @if(!(auth()->user()->is_admin ?? false))
+            <button type="button"
+                data-modal="createModal" 
+                data-photopath=""
+                class="hover:cursor-pointer" >
+                <div class="flex gap-2 justify-center items-center transition duration-300 ease-in-out hover:scale-105 border border-white rounded-lg px-2 py-2">
+                    <h1 class="hidden text-lg font-bold md:block">Criar</h1>
+                    <h1 class="text-xl">+</h1>
+                </div>
+            </button>
+        @endif
     </div>
 
     <div class="overflow-x-auto rounded-lg border-gray-500 border max-w-7xl mx-auto mt-6">

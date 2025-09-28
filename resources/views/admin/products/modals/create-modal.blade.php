@@ -7,7 +7,7 @@
             <!-- Imagem do Produto -->
             <div class="flex flex-col items-center gap-2">
                 <img 
-                    class="imagePreview w-80 h-42 object-cover rounded-lg border-4 border-white shadow cursor-pointer hover:border-green-400 transition"
+                    class="imagePreview w-80 h-48 object-cover rounded-lg border-4 border-white shadow cursor-pointer hover:border-green-400 transition"
                     src="" 
                     alt="productPhoto" 
                     data-target="photopath">
