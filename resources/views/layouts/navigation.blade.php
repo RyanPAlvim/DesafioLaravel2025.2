@@ -18,6 +18,13 @@
                     <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.index')">
                         {{ __('Produtos') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index')">
+                        @if(auth()->user()->is_admin ?? false)
+                            {{ __('Usuários') }}
+                        @else
+                            {{ __('Minha Conta') }}
+                        @endif
+                    </x-nav-link>
                 </div>
             </div>
 

@@ -52,6 +52,7 @@
             </div>
             <!-- Botão -->
             <div class="mt-4 flex justify-center gap-4">
+                <a id="viewProductPageBtn" href="#" target="_blank" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-gray-500 font-semibold transition">Ver Página</a>
                 <button type="button" data-close class="px-6 py-2 bg-gray-400 text-gray-800 rounded-lg hover:bg-gray-500 font-semibold transition">Fechar</button>
             </div>
         </form>

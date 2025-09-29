@@ -36,7 +36,7 @@
                         <td class="px-4 py-4 w-fit">
                             <div class="bg-green-200 inline-block rounded-lg">
                                 <button type="button" 
-                                    class="m-1 text-green-700 hover:text-indigo-900 font-semibold"
+                                    class="m-1 text-green-700 hover:text-indigo-900 font-semibold py-1 px-1"
                                     data-modal="viewModal"
                                     data-id="{{ $product->id }}" 
                                     data-name="{{ $product->name }}"
@@ -52,7 +52,7 @@
                             </div>
                             <div class="bg-blue-200 inline-block rounded-lg">
                                 <button type="button"
-                                    class="m-1 text-blue-700 hover:text-indigo-900 font-semibold"
+                                    class="m-1 text-blue-700 hover:text-indigo-900 font-semibold py-1 px-1"
                                     data-modal="editModal"
                                     data-id="{{ $product->id }}"
                                     data-name="{{ $product->name }}"
@@ -67,7 +67,7 @@
                             </div>
                             <div class="bg-red-200 inline-block rounded-lg">
                                 <button type="button"
-                                    class="m-1 text-red-600 hover:text-red-900 font-semibold"
+                                    class="m-1 text-red-600 hover:text-red-900 font-semibold py-1 px-1"
                                     data-id="{{ $product->id }}"
                                     data-name="{{ $product->name }}"
                                     data-modal="deleteModal">

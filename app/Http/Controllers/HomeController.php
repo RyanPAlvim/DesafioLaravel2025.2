@@ -13,8 +13,8 @@ class HomeController extends Controller
     {
         $query = Product::query();
 
-        if(Auth::check()){
-            $query->where('user_id' , '!=', Auth::id());
+        if (Auth::check()) {
+            $query->where('user_id', '!=', Auth::id());
         }
 
         if ($request->filled('search')) {
@@ -25,5 +25,11 @@ class HomeController extends Controller
         $products = $query->paginate(18);
 
         return view("home", compact("products"));
+    }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product', compact('product'));
     }
 }
