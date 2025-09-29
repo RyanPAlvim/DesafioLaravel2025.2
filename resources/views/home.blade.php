@@ -19,8 +19,8 @@
         </style>
     @endif
 </head>
-<body class="bg-gray-800 dark:bg-[#0a0a0a] flex flex-col min-h-screen">
-
+<body style="background-image: url('{{ asset('images/fundo.png') }}')" class="dark:bg-[#0a0a0a] flex flex-col min-h-screen">
+{{-- bg-[#0097b2] --}}
     <!-- Header -->
     <header class="w-full">
         @include('components.home-nav')
@@ -28,43 +28,53 @@
     <!-- Conteúdo principal -->
     <main class="flex-1 w-full flex flex-col items-center justify-center">
 
-        <!-- Imagem da Logo -->
-        <div class="h-[450px] w-full overflow-hidden mb-16">
-            <img class="w-full h-full object-cover" src="{{ asset('images/Shop.png')}}" alt="Logo">
-        </div>
-
-        <!-- Carrossel de Novidades -->
-        <section class="w-full mx-auto mb-10">
-            <h2 class="text-2xl font-bold text-white mb-4 text-center">Grandes Novidades !</h2>
-            <div class="relative overflow-hidden rounded-lg w-full" style="height: 320px;">
-                <div id="carousel" class="flex transition-transform duration-700 ease-in-out w-full" style="width: 100%;">
-                    @foreach($products->sortByDesc('created_at')->take(9) as $product)
-                        <div class="min-w-[33.3333%] flex flex-col items-center justify-center bg-sky-900 p-4">
-                            <img 
-                                src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png') }}"
-                                alt="{{ $product->name }}"
-                                class="w-48 h-32 object-cover rounded-lg mb-2 shadow-lg"
-                            >
-                            <span class="text-white font-semibold text-lg">{{ $product->name }}</span>
-                            <span class="text-green-400 font-bold text-xl">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
-                        </div>
-                    @endforeach
+        @if(!request('search') && $products->currentPage() == 1)
+            <div class="bg-blue-500 w-full">
+                <!-- Imagem da Logo -->
+                <div class="h-[200px] sm:h-[300px] md:h-[450px] w-full overflow-hidden mb-12">
+                    <img class="w-full h-full object-cover" src="{{ asset('images/Shop.png')}}" alt="Logo">
                 </div>
-                <button onclick="carouselScroll(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-sky-800 text-white px-3 py-2 rounded-full shadow hover:bg-sky-700 z-10">&lt;</button>
-                <button onclick="carouselScroll(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-sky-800 text-white px-3 py-2 rounded-full shadow hover:bg-sky-700 z-10">&gt;</button>
+                <!-- Carrossel de Novidades -->
+                <section class="max-w-full mx-auto mb-20 px-4 xl:px-32">
+                    <h2 class="mb-12 text-3xl font-bold text-white text-center">Grandes Novidades !</h2>
+                    <div class="relative overflow-hidden rounded-lg w-full pb-4" style="height: 320px;">
+                        <div id="carousel" class="flex transition-transform duration-700 ease-in-out w-full" style="width: 100%;">
+                            @foreach($products->sortByDesc('created_at')->take(9) as $product)
+                                <div class="min-w-[33.3333%] flex flex-col items-center justify-center bg-sky-900 p-16 cursor-pointer hover:bg-sky-800 transition duration-300 ease-in-out">
+                                    <img
+                                        src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png') }}"
+                                        alt="{{ $product->name }}"
+                                        class="w-56 h-40 object-cover rounded-lg mb-2 shadow-lg"
+                                    >
+                                    <span class="text-white font-semibold text-lg">{{ $product->name }}</span>
+                                    <span class="text-green-400 font-bold text-2xl">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button onclick="carouselScroll(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-sky-700 text-white px-3 py-2 rounded-full shadow hover:bg-sky-700 z-10">&lt;</button>
+                        <button onclick="carouselScroll(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-sky-700 text-white px-3 py-2 rounded-full shadow hover:bg-sky-700 z-10">&gt;</button>
+                    </div>
+                </section>
             </div>
-        </section>
+            <div class="border border-white flex flex-col justify-center items-center gap-4 bg-sky-900 mt-12 p-4 rounded-xl max-w-xl w-full">
+                <div>
+                    <h2 class="text-3xl font-bold text-white text-center">Produtos em Destaque</h2>
+                    <p class="text-gray-200 text-center mt-2 ">Confira alguns dos nossos produtos mais populares!</p>
+                </div>
+                <div class="max-w-[100px]"><img src="{{ asset('images/logo-tinino.png') }}" alt="logo-tinino"></div>
+            </div>
+        @endif
 
         <!-- Grid de Produtos -->
-        <section class="w-full max-w-8xl mx-auto">
-            <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-8 w-full">
+        <section class="w-full max-w-8xl mx-auto mt-20">
+            <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-8 w-full px-4 xl:px-32">
                 @foreach ($products as $product)
-                    <div class="flex flex-col lg:flex-row bg-sky-950 rounded-lg mb-4 gap-2 pb-12 shadow-lg hover:cursor-pointer hover:bg-blue-950 transiton duration-300 ease-in-out">
+                    <div class="border border-white flex flex-col lg:flex-row bg-sky-950 rounded-xl mb-4 gap-2 pb-12 shadow-lg hover:cursor-pointer hover:bg-sky-800 transition duration-300 ease-in-out">
                         <div class="flex flex-col items-center justify-center gap-4 p-4">
-                            <img class=" w-60 h-40 object-cover" src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png')}}" alt="fotoProduto">
+                            <img class=" w-100 h-40 object-cover" src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png')}}" alt="fotoProduto">
                         </div>
                         <div class="flex flex-col justify-center p-4 max-w-xs w-full">
-                            <p class="text-2xl text-white  mb-2">{{ $product->name }}</p>
+                            <p class="text-2xl text-white font-semibold mb-2">{{ $product->name }}</p>
                             <p class="text-gray-400 mb-2">{{ Str::limit($product->description, 60) }}</p>
                             <span class="text-green-400 font-bold text-3xl">R$ {{ number_format($product->price, 2, ',', '.') }}</span>
                             <span class="text-xs text-gray-400 mt-2">Estoque: {{ $product->stock }}</span>
@@ -74,7 +84,28 @@
             </div>
         </section>
 
+        @if(request('search') && $products->count() === 0)
+            <div class="bg-sky-900 mt-12 p-4 rounded-lg max-w-3xl w-full flex items-center justify-center">
+                <span class="text-2xl md:text-3xl text-white font-semibold text-center">
+                    Não encontramos resultados para <span class="text-yellow-300">"{{ request('search') }}"</span>
+                </span>
+            </div>
+
+            <div class="max-w-2xl">
+                <img src="{{ asset('images/logo-triste.png') }}" alt="">
+            </div>
+        @endif
+
+        <div class="mt-6 gap-4">
+            {{ $products->appends(request()->except('page'))->links() }}
+        </div>
+
     </main>
+
+    <!-- Footer -->
+    <footer>  
+        @include('components.home-footer')
+    </footer>
 
     <!-- Espaço extra para o header em telas grandes -->
     @if (Route::has('login'))

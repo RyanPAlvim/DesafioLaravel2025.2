@@ -22,6 +22,10 @@
                 </div>
             </div>
 
+            <form method="GET" action="{{ route('home') }}" class="flex items-center w-full max-w-xs ml-4 ms-4 me-4">
+                <input type="text" name="search" placeholder="🔍 Buscar..." value="{{ request('search') }}" class="placeholder-input w-full bg-white text-black px-3 py-2 rounded-3xl border border-white"/>
+            </form>
+
             <!-- Settings Dropdown or Auth Links -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
