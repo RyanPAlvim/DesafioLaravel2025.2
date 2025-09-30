@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -17,9 +19,9 @@ class OrderController extends Controller
         }
 
         // Cria o pedido
-        $order = new \App\Models\Order();
+        $order = new Order();
         $order->user_id = $user->id;
-        $order->status = 'pending';
+        $order->status = 'pendente';
         $order->total_price = 0;
         $order->save();
 
@@ -32,7 +34,7 @@ class OrderController extends Controller
             $name = $prod['name'] ?? null;
             if (!$productId || !$price || !$name) continue;
 
-            $order->orderItems()->create([
+            $order->items()->create([
                 'product_id' => $productId,
                 'product_name' => $name,
                 'unit_price' => $price,
@@ -43,9 +45,66 @@ class OrderController extends Controller
         $order->total_price = $total;
         $order->save();
 
-        // Aqui você pode iniciar o pagamento com PagSeguro usando $order e $order->orderItems
-        // return redirect()->route('pagseguro.checkout', $order->id);
+        // Integração com PagSeguro
 
+        $url = config('services.pagseguro.checkout_url');
+        $token = config('services.pagseguro.token');
+
+        $items = $order->items->map(function ($item) {
+            return [
+                'name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'unit_amount' => $item->unit_price * 100,
+            ];
+        })->toArray();
+
+        $response = Http::withHeaders([
+            'Authorization' => "Bearer " . $token,
+            'Content-Type' => 'application/json',
+        ])->withoutVerifying()->post($url, [
+            'reference_id' => (string)$order->id,
+            'items' => $items,
+        ]);
+
+        if ($response->failed()) {
+            // Exclui o pedido e seus itens
+            $order->items()->delete();
+            $order->delete();
+            return redirect()->route('purchase-error');
+        }
+
+        if ($response->successful()) {
+            // Atualiza saldo do vendedor e estoque dos produtos
+            foreach ($order->items as $item) {
+                $product = $item->product;
+                if ($product) {
+                    // Diminui o estoque
+                    $product->stock = max(0, $product->stock - $item->quantity);
+                    $product->save();
+                    // Atualiza saldo do vendedor
+                    $seller = $product->user;
+                    if ($seller) {
+                        $seller->saldo = $seller->saldo + ($item->unit_price * $item->quantity);
+                        $seller->save();
+                    }
+                }
+            }
+            $pay_link = data_get($response->json(), 'links.1.href');
+            if ($pay_link) {
+                return redirect()->away($pay_link);
+            }
+            // Se não houver link de pagamento, trata como erro
+            $order->items()->delete();
+            $order->delete();
+            return redirect()->route('purchase-error');
+        }
+
+        // Fallback para evitar erro de rota sem retorno
         return redirect()->route('home')->with('success', 'Pedido criado!');
+    }
+
+    public function purchaseError()
+    {
+        return view('purchase-error');
     }
 }

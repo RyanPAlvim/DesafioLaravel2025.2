@@ -28,5 +28,6 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::post('/checkout', [OrderController::class, 'store'])->middleware('auth');
+Route::get('/purchase-error', [OrderController::class, 'purchaseError'])->middleware('auth');
 
 require __DIR__ . '/auth.php';
