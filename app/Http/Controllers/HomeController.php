@@ -22,9 +22,14 @@ class HomeController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $products = $query->paginate(18);
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
 
-        return view("home", compact("products"));
+        $products = $query->paginate(18);
+        $categories = \App\Models\Category::all();
+
+        return view("home", compact("products", "categories"));
     }
 
     public function show($id)

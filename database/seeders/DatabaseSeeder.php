@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $users = User::factory(10)->create();
 
+        User::create([
+            'name' => 'teste',
+            'email' => 'teste@gmail.com',
+            'password' => 'teste'
+        ]);
+
         Product::factory(50)->create([
         'user_id' => $users->random()->id,
         ]);

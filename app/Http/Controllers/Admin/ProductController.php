@@ -18,14 +18,13 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::all();
-        if(Auth::user()->is_admin ?? false){
+        if (Auth::user()->is_admin ?? false) {
             $products = Product::with(['user', 'category'])->latest()->paginate(7);
-        }
-        else{
+        } else {
             $products = Product::with(['user', 'category'])
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->paginate(7);
+                ->where('user_id', Auth::id())
+                ->latest()
+                ->paginate(7);
         }
         return view('admin.products.index', compact('products', 'categories'));
     }
@@ -33,10 +32,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -52,16 +48,11 @@ class ProductController extends Controller
             'photo' => 'nullable|image|mimes:jpg,png,webp|max:2048',
         ]);
 
-        if($request->hasFile('photo')){
-            $destination = storage_path('app/public/images');
-            if(!file_exists($destination)) {
-                mkdir($destination, 0777, true);
-            }
-
+        if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $file->move($destination, $filename);
-            $validated['photo_path'] = $filename;
+            $path = $file->storeAs('products', $filename, 'public');
+            $validated['photo_path'] = $path;
         }
 
         $validated['user_id'] = Auth::id();
@@ -91,7 +82,7 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {   
+    {
         $product = Product::findOrFail($id);
 
         $validated = $request->validate([
@@ -104,16 +95,10 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            // Garante que a pasta existe
-            $destination = storage_path('app/public/images');
-            if (!file_exists($destination)) {
-                mkdir($destination, 0777, true);
-            }
-
             $file = $request->file('photo');
             $filename = time() . '-' . $file->getClientOriginalName();
-            $file->move($destination, $filename);
-            $validated['photo_path'] = $filename;
+            $path = $file->storeAs('products', $filename, 'public');
+            $validated['photo_path'] = $path;
         }
 
         $product->update($validated);

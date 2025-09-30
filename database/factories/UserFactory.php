@@ -42,6 +42,7 @@ class UserFactory extends Factory
             'cidade' => fake()->city(),
             'estado' => 'RJ',
             'complemento' => fake()->secondaryAddress(),
+            'saldo' => 0,
         ];
     }
 

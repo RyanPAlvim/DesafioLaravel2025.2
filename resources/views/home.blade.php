@@ -43,7 +43,7 @@
                             @foreach($products->sortByDesc('created_at')->take(9) as $product)
                                 <a href="{{ route('product.show', $product->id) }}" class="min-w-[33.3333%] flex flex-col items-center justify-center bg-sky-900 p-16 cursor-pointer hover:bg-sky-800 transition duration-300 ease-in-out">
                                     <img
-                                        src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png') }}"
+                                        src="{{ $product->photo_path ? asset('storage/' . $product->photo_path) : asset('images/placeholder.png') }}"
                                         alt="{{ $product->name }}"
                                         class="w-56 h-40 object-cover rounded-lg mb-2 shadow-lg"
                                     >
@@ -72,7 +72,7 @@
                 @foreach ($products as $product)
                     <a href="{{ route('product.show', $product->id) }}" class="border border-white flex flex-col lg:flex-row bg-sky-950 rounded-xl mb-4 gap-2 pb-12 shadow-lg hover:cursor-pointer hover:bg-sky-800 transition duration-300 ease-in-out">
                         <div class="flex flex-col items-center justify-center gap-4 p-4">
-                            <img class=" w-100 h-40 object-cover" src="{{ $product->photo_path ? asset('storage/images/' . $product->photo_path) : asset('images/placeholder.png')}}" alt="fotoProduto">
+                            <img class=" w-100 h-40 object-cover" src="{{ $product->photo_path ? asset('storage/' . $product->photo_path) : asset('images/placeholder.png')}}" alt="fotoProduto">
                         </div>
                         <div class="flex flex-col justify-center p-4 max-w-xs w-full">
                             <p class="text-2xl text-white font-semibold mb-2">{{ $product->name }}</p>
@@ -97,7 +97,7 @@
             </div>
         @endif
 
-        <div class="mt-6 max-w-7xl mx-auto">
+        <div class="mt-6 max-w-7xl mx-auto w-full">
             {{ $products->appends(request()->except('page'))->links() }}
         </div>
 

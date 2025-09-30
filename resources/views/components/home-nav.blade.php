@@ -1,7 +1,7 @@
 <!-- filepath: resources/views/components/home-nav.blade.php -->
 <nav x-data="{ open: false }" class="pt-5 bg-blue-500 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-16 gap-4">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
@@ -15,15 +15,43 @@
                         {{ __('Página Inicial') }}
                     </x-nav-link>
                     @auth
-                    <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.index')">
+                    <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.index')" >
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endauth
                 </div>
             </div>
 
-            <form method="GET" action="{{ route('home') }}" class="flex items-center w-full max-w-xs ml-4 ms-4 me-4">
-                <input type="text" name="search" placeholder="🔍 Buscar..." value="{{ request('search') }}" class="placeholder-input w-full bg-white text-black px-3 py-2 rounded-3xl border border-white"/>
+            <form method="GET" action="{{ route('home') }}" class="flex items-center w-full max-w-xs ml-4 ms-4 me-4 relative">
+                <div class="flex w-full ">
+                    <input type="text" name="search" placeholder="🔍 Buscar..." value="{{ request('search') }}"
+                        class="placeholder-input w-full bg-white text-black px-3 py-2 rounded-l-3xl rounded-r-none border border-white focus:z-10"/>
+                    <div x-data="{ open: false }" class="relative">
+                        <button type="button" @click="open = !open"
+                            class="px-4 py-2 rounded-r-3xl rounded-l-none border-l border-l-1 border-gray-400 bg-white text-black text-xs flex items-center gap-1 hover:bg-blue-100 focus:z-20 h-full"
+                            style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                            <span>
+                                @php
+                                    $catName = 'Categoria';
+                                    if(request('category') && isset($categories)) {
+                                        $cat = $categories->firstWhere('id', request('category'));
+                                        if($cat) $catName = $cat->name;
+                                    }
+                                @endphp
+                                {{ $catName }}
+                            </span>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute z-20 mt-1 right-0 w-40 bg-white rounded shadow border border-gray-200 min-h-[60px]">
+                            <a href="{{ route('home', array_merge(request()->except('category'), ['category' => ''])) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-blue-100 {{ !request('category') ? 'font-bold' : '' }}">Todas categorias</a>
+                            @isset($categories)
+                                @foreach($categories as $cat)
+                                    <a href="{{ route('home', array_merge(request()->except('category'), ['category' => $cat->id])) }}" class="block px-4 py-2 text-xs text-gray-700 hover:bg-blue-100 {{ request('category') == $cat->id ? 'font-bold' : '' }}">{{ $cat->name }}</a>
+                                @endforeach
+                            @endisset
+                        </div>
+                    </div>
+                </div>
             </form>
 
             <!-- Settings Dropdown or Auth Links -->
@@ -87,16 +115,16 @@
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             @auth
                 <div class="px-4">
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    <div class="font-medium text-base text-white dark:text-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-white">{{ Auth::user()->email }}</div>
                 </div>
                 <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')">
+                    <x-responsive-nav-link :href="route('profile.edit')" class="text-white bg-transparent hover:bg-blue-700">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-responsive-nav-link :href="route('logout')"
+                        <x-responsive-nav-link :href="route('logout')" class="text-red-400 bg-transparent hover:bg-blue-700"
                                 onclick="event.preventDefault();
                                             this.closest('form').submit();">
                             {{ __('Log Out') }}

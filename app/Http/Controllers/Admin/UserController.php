@@ -111,9 +111,15 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = Auth::user();
-        if (!($user->is_admin ?? false)) abort(403);
+        // Permite: admin excluir qualquer um OU usuário excluir a si mesmo
+        if (!($user->is_admin ?? false) && $user->id != $id) abort(403);
         $userData = User::findOrFail($id);
         $userData->delete();
+        // Se o usuário excluiu a si mesmo, faz logout e redireciona para home
+        if ($user->id == $id) {
+            Auth::logout();
+            return redirect('/')->with('success', 'Sua conta foi excluída!');
+        }
         return redirect()->route('admin.users.index')->with('success', 'Usuário excluído!');
     }
 }
