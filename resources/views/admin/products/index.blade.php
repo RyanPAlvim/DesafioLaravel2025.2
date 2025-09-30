@@ -4,7 +4,7 @@
         <h1 class="text-4xl uppercase font-semibold">Produtos</h1>
         @if(!(auth()->user()->is_admin ?? false))
             <button type="button"
-                data-modal="createModal" 
+                data-modal="product-create-modal" 
                 data-photopath=""
                 class="hover:cursor-pointer" >
                 <div class="flex gap-2 justify-center items-center transition duration-300 ease-in-out hover:scale-105 border border-white rounded-lg px-2 py-2">
@@ -37,7 +37,7 @@
                             <div class="bg-green-200 inline-block rounded-lg">
                                 <button type="button" 
                                     class="m-1 text-green-700 hover:text-indigo-900 font-semibold py-1 px-1"
-                                    data-modal="viewModal"
+                                    data-modal="product-view-modal"
                                     data-id="{{ $product->id }}" 
                                     data-name="{{ $product->name }}"
                                     data-price="{{ $product->price }}"
@@ -53,7 +53,7 @@
                             <div class="bg-blue-200 inline-block rounded-lg">
                                 <button type="button"
                                     class="m-1 text-blue-700 hover:text-indigo-900 font-semibold py-1 px-1"
-                                    data-modal="editModal"
+                                    data-modal="product-edit-modal"
                                     data-id="{{ $product->id }}"
                                     data-name="{{ $product->name }}"
                                     data-price="{{ $product->price }}"
@@ -70,7 +70,7 @@
                                     class="m-1 text-red-600 hover:text-red-900 font-semibold py-1 px-1"
                                     data-id="{{ $product->id }}"
                                     data-name="{{ $product->name }}"
-                                    data-modal="deleteModal">
+                                    data-modal="product-delete-modal">
                                     Excluir
                                 </button>
                             </div>

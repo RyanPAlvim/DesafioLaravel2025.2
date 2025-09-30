@@ -19,13 +19,13 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         if(Auth::user()->is_admin ?? false){
-            $products = Product::with(['user', 'category'])->latest()->paginate(8);
+            $products = Product::with(['user', 'category'])->latest()->paginate(7);
         }
         else{
             $products = Product::with(['user', 'category'])
             ->where('user_id', Auth::id())
             ->latest()
-            ->paginate(8);
+            ->paginate(7);
         }
         return view('admin.products.index', compact('products', 'categories'));
     }

@@ -1,6 +1,6 @@
-<div id="editModal" class="fixed z-20 inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center overflow-y-auto hidden">
+<div id="product-edit-modal" class="product-modal fixed z-20 inset-0 bg-black bg-opacity-50 flex sm:items-center items-start justify-center overflow-y-auto hidden">
     <div class="bg-gradient-to-t from-teal-800 to-sky-900 p-4 md:p-8 rounded-2xl shadow-2xl w-full max-w-xl mx-2 mt-8 mb-8 overflow-y-auto max-h-[90vh]">
-        <h2 class="text-3xl font-extrabold text-white mb-8 text-center tracking-wide">Editar Produto</h2>
+        <h2 class="text-3xl font-extrabold text-yellow-600 mb-8 text-center tracking-wide">Editar Produto</h2>
         <form method="POST" action="" enctype="multipart/form-data" class="flex flex-col gap-5">
             @csrf
             @method("PATCH")

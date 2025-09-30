@@ -22,8 +22,9 @@
 <body style="background-image: url('{{ asset('images/fundo.png') }}')" class="dark:bg-[#0a0a0a] flex flex-col min-h-screen">
 {{-- bg-[#0097b2] --}}
     <!-- Header -->
-    <header class="w-full">
+    <header class="w-full sticky top-0 z-30">
         @include('components.home-nav')
+    </header>
 
     <!-- Conteúdo principal -->
     <main class="flex-1 w-full flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">

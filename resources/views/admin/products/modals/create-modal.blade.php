@@ -1,9 +1,8 @@
-<div id="createModal" class="fixed z-20 inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+<div id="product-create-modal" class="product-modal fixed z-20 inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-gradient-to-t from-teal-800 to-sky-900 p-4 md:p-8 rounded-2xl shadow-2xl w-full max-w-lg mx-2">
         <h2 class="text-3xl font-extrabold text-white mb-8 text-center tracking-wide">Novo Produto</h2>
-        <form method="POST" action="" enctype="multipart/form-data" class="flex flex-col gap-5">
+        <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data" class="flex flex-col gap-5">
             @csrf
-            @method("POST")
             <!-- Imagem do Produto -->
             <div class="flex flex-col items-center gap-2">
                 <img 
