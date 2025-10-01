@@ -88,7 +88,7 @@
         @if(request('search') && $products->count() === 0)
             <div class="bg-sky-900 mt-12 p-4 rounded-lg max-w-3xl w-full flex items-center justify-center">
                 <span class="text-2xl md:text-3xl text-white font-semibold text-center">
-                    Não encontramos resultados para <span class="text-yellow-300">"{{ request('search') }}"</span>
+                    Não encontramos resultados para a busca <span class="text-yellow-300">"{{ request('search') }}"</span>
                 </span>
             </div>
 
