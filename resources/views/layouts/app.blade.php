@@ -32,5 +32,53 @@
                 {{ $slot }}
             </main>
         </div>
+        @if (request()->routeIs('profile.edit'))
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cepInput = document.querySelector('#cep');
+            if (cepInput && !cepInput.dataset.cepListenerAdded) {
+                cepInput.dataset.cepListenerAdded = 'true';
+                let errorMsg = document.getElementById('cep-error-msg');
+                if (!errorMsg) {
+                    errorMsg = document.createElement('div');
+                    errorMsg.id = 'cep-error-msg';
+                    errorMsg.textContent = 'CEP não encontrado.';
+                    errorMsg.style.display = 'none';
+                    errorMsg.style.color = '#e53e3e';
+                    errorMsg.style.fontWeight = 'bold';
+                    errorMsg.style.textAlign = 'center';
+                    errorMsg.style.margin = '10px auto';
+                    cepInput.parentElement.parentElement.prepend(errorMsg);
+                }
+                cepInput.addEventListener('input', async function () {
+                    const cep = cepInput.value.replace(/\D/g, '');
+                    if (cep.length === 8) {
+                        try {
+                            const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                            const data = await res.json();
+                            if (!data.erro) {
+                                errorMsg.style.display = 'none';
+                                const rua = document.querySelector('#rua');
+                                const bairro = document.querySelector('#bairro');
+                                const cidade = document.querySelector('#cidade');
+                                const estado = document.querySelector('#estado');
+                                if (rua) rua.value = data.logradouro || '';
+                                if (bairro) bairro.value = data.bairro || '';
+                                if (cidade) cidade.value = data.localidade || '';
+                                if (estado) estado.value = data.uf || '';
+                            } else {
+                                errorMsg.style.display = 'block';
+                            }
+                        } catch (e) {
+                            errorMsg.style.display = 'block';
+                        }
+                    } else {
+                        errorMsg.style.display = 'none';
+                    }
+                });
+            }
+        });
+        </script>
+        @endif
     </body>
 </html>

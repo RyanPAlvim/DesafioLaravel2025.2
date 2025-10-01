@@ -12,6 +12,30 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        
+        $requiredFields = [
+            'name',
+            'email',
+            'cpf',
+            'birth_date',
+            'phone',
+            'cep',
+            'rua',
+            'numero',
+            'bairro',
+            'cidade',
+            'estado'
+        ];
+        $missingFields = [];
+        foreach ($requiredFields as $field) {
+            if (empty($user->$field)) {
+                $missingFields[] = $field;
+            }
+        }
+        if (count($missingFields) > 0) {
+            return redirect()->route('profile.edit')
+                ->with('error', 'Termine de informar os dados da conta para concluir a compra.');
+        }
         // Recebe os produtos enviados pelo form (json)
         $orderProducts = json_decode($request->input('orderProducts'), true);
         if (!$orderProducts || !is_array($orderProducts) || count($orderProducts) === 0) {
@@ -27,7 +51,7 @@ class OrderController extends Controller
 
         $total = 0;
         foreach ($orderProducts as $prod) {
-            
+
             $productId = $prod['id'] ?? null;
             $price = $prod['price'] ?? null;
             $qty = $prod['quantity'] ?? 1;
@@ -67,7 +91,7 @@ class OrderController extends Controller
         ]);
 
         if ($response->failed()) {
-            
+
             $order->items()->delete();
             $order->delete();
             return redirect()->route('purchase-error');
@@ -78,10 +102,10 @@ class OrderController extends Controller
             foreach ($order->items as $item) {
                 $product = $item->product;
                 if ($product) {
-                    
+
                     $product->stock = max(0, $product->stock - $item->quantity);
                     $product->save();
-                    
+
                     $seller = $product->user;
                     if ($seller) {
                         $seller->saldo = $seller->saldo + ($item->unit_price * $item->quantity);
@@ -93,13 +117,13 @@ class OrderController extends Controller
             if ($pay_link) {
                 return redirect()->away($pay_link);
             }
-            
+
             $order->items()->delete();
             $order->delete();
             return redirect()->route('purchase-error');
         }
 
-        
+
         return redirect()->route('home')->with('success', 'Pedido criado!');
     }
 

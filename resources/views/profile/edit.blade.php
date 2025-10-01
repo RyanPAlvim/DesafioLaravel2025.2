@@ -5,6 +5,14 @@
         </h2>
     </x-slot>
 
+    @if(session('error'))
+        <div class="max-w-2xl mx-auto mb-6">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center font-semibold">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">

@@ -47,9 +47,60 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <x-input-label for="cpf" value="CPF" />
+                <x-text-input id="cpf" name="cpf" type="text" class="mt-1 block w-full" :value="old('cpf', $user->cpf)" autocomplete="cpf" />
+                <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
+            </div>
+            <div>
+                <x-input-label for="birth_date" value="Data de Nascimento" />
+                <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" :value="old('birth_date', $user->birth_date)" autocomplete="bday" />
+                <x-input-error class="mt-2" :messages="$errors->get('birth_date')" />
+            </div>
+            <div>
+                <x-input-label for="phone" value="Telefone" />
+                <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="tel" />
+                <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+            </div>
+            <div>
+                <x-input-label for="cep" value="CEP" />
+                <x-text-input id="cep" name="cep" type="text" class="mt-1 block w-full" :value="old('cep', $user->cep)" autocomplete="postal-code" />
+                <x-input-error class="mt-2" :messages="$errors->get('cep')" />
+            </div>
+            <div>
+                <x-input-label for="rua" value="Rua" />
+                <x-text-input id="rua" name="rua" type="text" class="mt-1 block w-full" :value="old('rua', $user->rua)" autocomplete="address-line1" />
+                <x-input-error class="mt-2" :messages="$errors->get('rua')" />
+            </div>
+            <div>
+                <x-input-label for="numero" value="Número" />
+                <x-text-input id="numero" name="numero" type="text" class="mt-1 block w-full" :value="old('numero', $user->numero)" autocomplete="address-line2" />
+                <x-input-error class="mt-2" :messages="$errors->get('numero')" />
+            </div>
+            <div>
+                <x-input-label for="bairro" value="Bairro" />
+                <x-text-input id="bairro" name="bairro" type="text" class="mt-1 block w-full" :value="old('bairro', $user->bairro)" autocomplete="address-level3" />
+                <x-input-error class="mt-2" :messages="$errors->get('bairro')" />
+            </div>
+            <div>
+                <x-input-label for="cidade" value="Cidade" />
+                <x-text-input id="cidade" name="cidade" type="text" class="mt-1 block w-full" :value="old('cidade', $user->cidade)" autocomplete="address-level2" />
+                <x-input-error class="mt-2" :messages="$errors->get('cidade')" />
+            </div>
+            <div>
+                <x-input-label for="estado" value="Estado" />
+                <x-text-input id="estado" name="estado" type="text" class="mt-1 block w-full" :value="old('estado', $user->estado)" autocomplete="address-level1" />
+                <x-input-error class="mt-2" :messages="$errors->get('estado')" />
+            </div>
+            <div>
+                <x-input-label for="complemento" value="Complemento" />
+                <x-text-input id="complemento" name="complemento" type="text" class="mt-1 block w-full" :value="old('complemento', $user->complemento)" autocomplete="address-line3" />
+                <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
+            </div>
+        </div>
+        <div class="flex items-center gap-4 mt-6">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
-
             @if (session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"
