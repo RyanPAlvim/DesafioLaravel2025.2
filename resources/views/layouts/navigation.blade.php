@@ -33,6 +33,11 @@
                         {{ __('Histórico de Compras') }}
                     </x-nav-link>
                     @endif
+                    @if(auth()->user()->is_admin ?? false)
+                    <x-nav-link :href="route('admin.sendmail.form')" :active="request()->routeIs('admin.sendmail.form')" >
+                        {{ __('Enviar Email') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 

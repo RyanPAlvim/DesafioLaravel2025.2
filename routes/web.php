@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\SendMailController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,9 +24,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('users', UserController::class);
+
+    // Envio de email (checa admin no controller)
+    Route::get('/sendmail', [SendMailController::class, 'form'])->name('sendmail.form');
+    Route::post('/sendmail', [SendMailController::class, 'send'])->name('sendmail.send');
 });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
