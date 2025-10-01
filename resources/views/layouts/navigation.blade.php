@@ -25,6 +25,14 @@
                             {{ __('Minha Conta') }}
                         @endif
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.history.vendas')" :active="request()->routeIs('admin.history.vendas')" >
+                        {{ __('Histórico de Vendas') }}
+                    </x-nav-link>
+                    @if(!(auth()->user()->is_admin ?? false))
+                    <x-nav-link :href="route('admin.history.compras')" :active="request()->routeIs('admin.history.compras')" >
+                        {{ __('Histórico de Compras') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -96,6 +104,14 @@
                     {{ __('Minha Conta') }}
                 @endif
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.history.vendas')" :active="request()->routeIs('admin.history.vendas')" class="text-white bg-transparent hover:bg-blue-700">
+                {{ __('Histórico de Vendas') }}
+            </x-responsive-nav-link>
+            @if(!(auth()->user()->is_admin ?? false))
+            <x-responsive-nav-link :href="route('admin.history.compras')" :active="request()->routeIs('admin.history.compras')" class="text-white bg-transparent hover:bg-blue-700">
+                {{ __('Histórico de Compras') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

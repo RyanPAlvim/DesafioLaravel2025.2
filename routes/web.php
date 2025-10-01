@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
@@ -27,7 +28,18 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', UserController::class);
 });
 
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // Histórico de Compras
+    Route::get('/historico-compras', [HistoryController::class, 'compras'])->name('history.compras');
+    Route::get('/historico-compras/pdf', [HistoryController::class, 'comprasPdf'])->name('history.compras.pdf');
+
+    // Histórico de Vendas
+    Route::get('/historico-vendas', [HistoryController::class, 'vendas'])->name('history.vendas');
+    Route::get('/historico-vendas/pdf', [HistoryController::class, 'vendasPdf'])->name('history.vendas.pdf');
+});
+
 Route::post('/checkout', [OrderController::class, 'store'])->middleware('auth');
 Route::get('/purchase-error', [OrderController::class, 'purchaseError'])->middleware('auth');
+
 
 require __DIR__ . '/auth.php';

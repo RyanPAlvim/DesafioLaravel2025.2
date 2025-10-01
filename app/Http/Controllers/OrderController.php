@@ -21,13 +21,13 @@ class OrderController extends Controller
         // Cria o pedido
         $order = new Order();
         $order->user_id = $user->id;
-        $order->status = 'pendente';
+        $order->status = 'preparando';
         $order->total_price = 0;
         $order->save();
 
         $total = 0;
         foreach ($orderProducts as $prod) {
-            // Espera-se que $prod tenha id, price, quantity, name
+            
             $productId = $prod['id'] ?? null;
             $price = $prod['price'] ?? null;
             $qty = $prod['quantity'] ?? 1;
@@ -67,7 +67,7 @@ class OrderController extends Controller
         ]);
 
         if ($response->failed()) {
-            // Exclui o pedido e seus itens
+            
             $order->items()->delete();
             $order->delete();
             return redirect()->route('purchase-error');
@@ -78,10 +78,10 @@ class OrderController extends Controller
             foreach ($order->items as $item) {
                 $product = $item->product;
                 if ($product) {
-                    // Diminui o estoque
+                    
                     $product->stock = max(0, $product->stock - $item->quantity);
                     $product->save();
-                    // Atualiza saldo do vendedor
+                    
                     $seller = $product->user;
                     if ($seller) {
                         $seller->saldo = $seller->saldo + ($item->unit_price * $item->quantity);
@@ -93,13 +93,13 @@ class OrderController extends Controller
             if ($pay_link) {
                 return redirect()->away($pay_link);
             }
-            // Se não houver link de pagamento, trata como erro
+            
             $order->items()->delete();
             $order->delete();
             return redirect()->route('purchase-error');
         }
 
-        // Fallback para evitar erro de rota sem retorno
+        
         return redirect()->route('home')->with('success', 'Pedido criado!');
     }
 
